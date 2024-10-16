@@ -4,6 +4,9 @@ from pytrends.request import TrendReq
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import time
+from flask import Flask, request, render_template, send_file, redirect, url_for
+from flask_cors import CORS
+import os
 
 # Suppress FutureWarnings related to fillna downcasting behavior
 warnings.simplefilter(action='ignore', category=FutureWarning)
@@ -11,6 +14,10 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 # Use 'Agg' backend for headless environments
 import matplotlib
 matplotlib.use('Agg')  # Non-interactive backend for saving plots as images
+
+# Initialize Flask app and enable CORS
+app = Flask(__name__)
+CORS(app)
 
 # Function to compare Google Trends of 2 or 3 keywords
 def compare_google_trends(keywords, timeframe='today 12-m'):
@@ -26,21 +33,12 @@ def compare_google_trends(keywords, timeframe='today 12-m'):
     # Retrieve interest over time
     trends_data = pytrends.interest_over_time()
 
-    # Debugging output: Print the first few rows of data
-    print("Trends data fetched:")
-    print(trends_data.head())
-
     # Check if any data is available
     if trends_data.empty:
-        print("No data found for the given keywords.")
-        return
+        return None
 
     # Drop the 'isPartial' column if it exists
     trends_data = trends_data.drop(labels=['isPartial'], axis='columns', errors='ignore')
-
-    # Debugging: Print the columns and date range
-    print(f"Columns in trends data: {trends_data.columns}")
-    print(f"Data range: {trends_data.index.min()} to {trends_data.index.max()}")
 
     # Create the figure and axis
     fig, ax = plt.subplots(figsize=(12, 6))
@@ -71,38 +69,45 @@ def compare_google_trends(keywords, timeframe='today 12-m'):
     # Adjust layout for better spacing
     plt.tight_layout()
 
-    # Save the plot to an image file (since no GUI is available)
-    plt.savefig("google_trends_comparison.png")
-    print("Plot saved as 'google_trends_comparison.png'.")
+    # Save the plot to an image file
+    plot_filename = "static/google_trends_comparison.png"
+    plt.savefig(plot_filename)
+    plt.close()
 
-# Main function to handle command-line arguments
-def main():
-    # Set up argument parser
-    parser = argparse.ArgumentParser(description='Compare Google Trends for 2 or 3 keywords.')
-    
-    # Add two required positional arguments for the first two keywords
-    parser.add_argument('keyword1', type=str, help='First keyword to compare')
-    parser.add_argument('keyword2', type=str, help='Second keyword to compare')
+    return plot_filename
 
-    # Add optional third argument for the third keyword
-    parser.add_argument('--keyword3', type=str, help='Third optional keyword', default=None)
+# Route for the web interface
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-    # Add optional argument for the date range (timeframe)
-    parser.add_argument('--timeframe', type=str, help='Timeframe for Google Trends (e.g., "today 12-m", "today 5-y", "2004-present", "YYYY-MM-DD YYYY-MM-DD")', default='today 12-m')
-
-    # Parse the arguments
-    args = parser.parse_args()
+# Route to handle form submission and show the comparison
+@app.route('/compare', methods=['POST'])
+def compare():
+    # Get the form data
+    keyword1 = request.form.get('keyword1')
+    keyword2 = request.form.get('keyword2')
+    keyword3 = request.form.get('keyword3')
+    timeframe = request.form.get('timeframe', 'today 12-m')
 
     # Prepare the keywords list
-    keywords = [args.keyword1, args.keyword2]
+    keywords = [keyword1, keyword2]
+    if keyword3:
+        keywords.append(keyword3)
 
-    # Add the third keyword if provided
-    if args.keyword3:
-        keywords.append(args.keyword3)
+    # Generate the comparison plot
+    plot_filename = compare_google_trends(keywords, timeframe)
+    if not plot_filename:
+        return "No data available for the given keywords."
 
-    # Compare the Google Trends for the provided keywords and timeframe
-    compare_google_trends(keywords, timeframe=args.timeframe)
+    # Redirect to the display page
+    return redirect(url_for('display_image'))
 
-# Entry point of the script
-if __name__ == "__main__":
-    main()
+# Route to display the generated image
+@app.route('/image')
+def display_image():
+    return render_template('image.html')
+
+# Run the Flask server
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
