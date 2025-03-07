@@ -53,9 +53,18 @@ def compare_google_trends(keywords, timeframe='today 12-m'):
     ax.set_xlabel('Date', fontsize=12)
     ax.set_ylabel('Interest Over Time', fontsize=12)
 
-    # Format x-axis for dates (daily ticks)
-    ax.xaxis.set_major_locator(mdates.DayLocator())  # Set locator to days
-    ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))  # Show date format as Year-Month-Day
+    # Format x-axis date ticks based on the timeframe
+    if 'today 12-m' in timeframe or 'today 5-y' in timeframe:
+        # For 12-month or longer periods, use monthly ticks
+        ax.xaxis.set_major_locator(mdates.MonthLocator())  # Set locator to months
+        ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))  # Format as 'Jan 2023'
+    else:
+        # For shorter timeframes, keep daily or weekly ticks
+        if 'today 1-m' in timeframe:
+            ax.xaxis.set_major_locator(mdates.WeekdayLocator())  # Weekly ticks for shorter periods
+        else:
+            ax.xaxis.set_major_locator(mdates.AutoLocator())  # Auto determine appropriate tick spacing
+        ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))  # Show date format as Year-Month-Day
 
     # Rotate the x-axis labels for better readability
     plt.xticks(rotation=45, ha='right')
