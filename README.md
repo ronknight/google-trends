@@ -1,6 +1,15 @@
 <h1 align="center">📊 <a href="https://github.com/ronknight/google-trends">Google Trends Comparison Script (Flask API with Web Interface)</a></h1>
 
 <h4 align="center">🔧 A Python-based script to compare the popularity of multiple keywords using Google Trends data, now with a Flask web interface for easy access and visualization.</h4>
+<p align="center">
+  <a href="https://twitter.com/PinoyITSolution"><img src="https://img.shields.io/twitter/follow/PinoyITSolution?style=social"></a>
+  <a href="https://github.com/ronknight?tab=followers"><img src="https://img.shields.io/github/followers/ronknight?style=social"></a>
+  <a href="https://github.com/ronknight/ronknight/stargazers"><img src="https://img.shields.io/github/stars/BEPb/BEPb.svg?logo=github"></a>
+  <a href="https://github.com/ronknight/ronknight/network/members"><img src="https://img.shields.io/github/forks/BEPb/BEPb.svg?color=blue&logo=github"></a>
+  <a href="https://github.com/ronknight/google-trends/issues"><img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat"></a>
+  <a href="https://github.com/ronknight/google-trends/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg"></a>
+  <a href="https://github.com/ronknight"><img src="https://img.shields.io/badge/Made%20with%20%F0%9F%A4%8D%20by%20-%20Ronknight%20-%20red"></a>
+</p>
 
 <p align="center">
   <a href="#overview">Overview</a> •
