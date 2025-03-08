@@ -113,7 +113,7 @@ pip install Flask Flask-CORS pytrends matplotlib pandas
 
 The script generates a comparison plot of the search trends, such as the one below:
 
-![Example Plot](static\google_trends_comparison.png)
+![Example Plot](static/google_trends_comparison.png)
 
 ## API Endpoints
 
