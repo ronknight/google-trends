@@ -6,37 +6,195 @@
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <title>4sgm - 📊 Google Trends Comparison</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        form { margin: 50px auto; width: 300px; }
-        input, select { width: 100%; padding: 8px; margin: 8px 0; }
-        button { padding: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 25px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        /* Loading overlay */
+        #loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.92);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .loading-card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            max-width: 400px;
+            width: 80%;
+        }
+        .loading-spinner {
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+        }
+        .loading-spinner:after {
+            content: " ";
+            display: block;
+            width: 64px;
+            height: 64px;
+            margin: 8px;
+            border-radius: 50%;
+            border: 6px solid #4CAF50;
+            border-color: #4CAF50 transparent #4CAF50 transparent;
+            animation: loading-spinner 1.2s linear infinite;
+        }
+        @keyframes loading-spinner {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loading-message {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+        .loading-details {
+            margin-top: 15px;
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .loading-progress {
+            margin-top: 20px;
+            height: 10px;
+            background-color: #eee;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .loading-progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #4CAF50;
+            border-radius: 5px;
+            animation: progress 30s linear forwards;
+        }
+        @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
     </style>
 </head>
 <body>
 
-<h2 align="center">📊 Google Trends Comparison</h2>
+<div class="container">
+    <h2>📊 Google Trends Comparison</h2>
+    
+    <form id="trends-form" action="/compare" method="POST">
+        <div class="form-group">
+            <label for="keyword1">Keyword 1</label>
+            <input type="text" id="keyword1" name="keyword1" placeholder="Enter first keyword" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="keyword2">Keyword 2</label>
+            <input type="text" id="keyword2" name="keyword2" placeholder="Enter second keyword" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="keyword3">Keyword 3 (Optional)</label>
+            <input type="text" id="keyword3" name="keyword3" placeholder="Enter third keyword">
+        </div>
+        
+        <div class="form-group">
+            <label for="timeframe">Timeframe</label>
+            <select id="timeframe" name="timeframe">
+                <option value="today 12-m">Past 12 months</option>
+                <option value="now 7-d">Past 7 days</option>
+                <option value="now 1-d">Past 1 day</option>
+                <option value="today 5-y">Past 5 years</option>
+                <option value="2004-present">2004 to present</option>
+            </select>
+        </div>
+        
+        <button type="submit">Compare Trends</button>
+    </form>
+</div>
 
-<form action="/compare" method="POST">
-    <label for="keyword1">Keyword 1</label>
-    <input type="text" id="keyword1" name="keyword1" placeholder="Enter first keyword" required>
+<!-- Loading overlay with card design -->
+<div id="loading-overlay">
+    <div class="loading-card">
+        <div class="loading-spinner"></div>
+        <div class="loading-message">Fetching Google Trends Data</div>
+        <div class="loading-details">
+            This process may take up to 30 seconds due to Google's rate limiting policies. 
+            We're making multiple attempts to ensure your data is retrieved successfully.
+        </div>
+        <div class="loading-progress">
+            <div class="loading-progress-bar"></div>
+        </div>
+    </div>
+</div>
 
-    <label for="keyword2">Keyword 2</label>
-    <input type="text" id="keyword2" name="keyword2" placeholder="Enter second keyword" required>
-
-    <label for="keyword3">Keyword 3 (Optional)</label>
-    <input type="text" id="keyword3" name="keyword3" placeholder="Enter third keyword">
-
-    <label for="timeframe">Timeframe</label>
-    <select id="timeframe" name="timeframe">
-        <option value="today 12-m">Past 12 months</option>
-        <option value="now 7-d">Past 7 days</option>
-        <option value="now 1-d">Past 1 day</option>
-        <option value="today 5-y">Past 5 years</option>
-        <option value="2004-present">2004 to present</option>
-    </select>
-
-    <button type="submit">Compare Trends</button>
-</form>
+<script>
+    document.getElementById('trends-form').addEventListener('submit', function() {
+        document.getElementById('loading-overlay').style.display = 'flex';
+    });
+</script>
 
 </body>
 </html>
