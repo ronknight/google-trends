@@ -112,11 +112,7 @@ The application provides a clean, user-friendly web interface with the following
 - Past 5 years
 - 2004 to present
 
-### Example Output:
 
-The application generates a comparison plot of the search trends:
-
-![Example Plot](static/google_trends_comparison.png)
 
 ## Visualization
 
