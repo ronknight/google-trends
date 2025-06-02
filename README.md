@@ -205,6 +205,18 @@ The application provides a JSON API endpoint for programmatic access to Google T
 }
 ```
 
+### Example cURL Command
+
+You can test the API endpoint using the following `curl` command:
+
+```bash
+curl -X POST -H "Content-Type: application/json" \
+  -d '{"keywords": ["disney", "hello kitty", "dove", "colgate", "batman"], "timeframe": "today 12-m"}' \
+  http://localhost:5000/api/compare -o good_response.json
+```
+
+This command sends a POST request to the API with five keywords and saves the JSON response to `good_response.json`.
+
 ### Success Response
 
 - **Code:** `200 OK`
