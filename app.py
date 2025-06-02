@@ -1,42 +1,69 @@
-import argparse
+import matplotlib
+matplotlib.use('Agg')
+
 import warnings
 from pytrends.request import TrendReq
+from fake_useragent import UserAgent
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import time
-from flask import Flask, request, render_template, send_file, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for  # Removed send_file
 from flask_cors import CORS
 import os
 from pytrends.exceptions import TooManyRequestsError
 import random
-import requests
-import sys
+# Removed unused imports: argparse, requests, sys
 
 # Suppress FutureWarnings related to fillna downcasting behavior
+# This must be after `import warnings`
 warnings.simplefilter(action='ignore', category=FutureWarning)
-
-# Use 'Agg' backend for headless environments
-import matplotlib
-matplotlib.use('Agg')  # Non-interactive backend for saving plots as images
 
 # Initialize Flask app and enable CORS
 app = Flask(__name__)
 CORS(app)
 
+# Optional: Configure a proxy for Google Trends requests
+# Set the HTTP_PROXY and HTTPS_PROXY environment variables if you want to use a proxy.
+# For example:
+# HTTP_PROXY="http://your_proxy_address:port"
+# HTTPS_PROXY="https://your_proxy_address:port"
+# pytrends will use these proxies for its requests.
+
 # Define a custom TrendReq class to handle retries ourselves
-def get_pytrends_instance():
+ua = UserAgent()  # Added
+
+def get_pytrends_instance(proxy_arg=None):  # Renamed for clarity
     """
-    Create a PyTrends instance with compatibility for different versions of requests
+    Create a PyTrends instance with compatibility for different versions of requests.
+    Allows specifying a proxy directly or via environment variables.
     """
     # Create a randomized user agent to avoid detection
-    user_agent = f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{random.randint(80, 110)}.0.{random.randint(1000, 9999)}.{random.randint(100, 999)} Safari/537.36'
+    user_agent = ua.random  # Changed
+    
+    requests_args = {'headers': {'User-Agent': user_agent}}
+    
+    proxies_to_use = proxy_arg  # Prioritize arg
+    
+    if not proxies_to_use:  # Fallback to env vars
+        env_http_proxy = os.environ.get('HTTP_PROXY')
+        env_https_proxy = os.environ.get('HTTPS_PROXY')
+        
+        if env_http_proxy or env_https_proxy:
+            proxies_to_use = {}
+            if env_http_proxy:
+                proxies_to_use['http'] = env_http_proxy
+            if env_https_proxy:
+                proxies_to_use['https'] = env_https_proxy
+                
+    if proxies_to_use:
+        requests_args['proxies'] = proxies_to_use
     
     # Initialize pytrends with basic settings, no retries (we'll handle that ourselves)
     return TrendReq(
         hl='en-US', 
         tz=360,
         timeout=(10, 25),  # (connect, read) timeouts
-        requests_args={'headers': {'User-Agent': user_agent}}
+        requests_args=requests_args  # Updated
     )
 
 # Function to compare Google Trends of 2 or 3 keywords
@@ -49,7 +76,8 @@ def compare_google_trends(keywords, timeframe='today 12-m', max_retries=3, initi
     while retry_count < max_retries:
         try:
             # Get a fresh pytrends instance
-            pytrends = get_pytrends_instance()
+            # Env vars will be used if set and no explicit proxy_arg passed
+            pytrends = get_pytrends_instance() 
             
             # Add initial delay to prevent rate limiting
             time.sleep(retry_delay)
@@ -116,20 +144,37 @@ def compare_google_trends(keywords, timeframe='today 12-m', max_retries=3, initi
             retry_count += 1
             if retry_count < max_retries:
                 # Exponential backoff with jitter
-                retry_delay = min(retry_delay * 2 + (time.time() % 1), 120)  # Cap at 120 seconds
-                print(f"Rate limit exceeded. Retrying in {retry_delay:.1f} seconds... (Attempt {retry_count} of {max_retries})")
+                jitter = random.uniform(0.5, 1.5)
+                retry_delay = min(retry_delay * 2 * jitter, 120)  # Cap at 120 seconds
+                print(f"Rate limit exceeded. Retrying in {retry_delay:.1f} seconds... "
+                      f"(Attempt {retry_count} of {max_retries})")
                 time.sleep(retry_delay)
             else:
-                raise Exception(f"Failed to fetch Google Trends data after {max_retries} attempts due to rate limiting. Try again later.")
+                # Informative message for TooManyRequestsError
+                error_message = (
+                    f"Failed to fetch Google Trends data after {max_retries} attempts. "
+                    "This might be due to Google's rate limiting or network issues. "
+                    "If this problem persists, consider using a dedicated proxy service. "
+                    "You can configure this in the application if you have proxy access."
+                )
+                raise Exception(error_message)
         except Exception as e:
             retry_count += 1
             if retry_count < max_retries:
                 # Also retry on general exceptions with an increased delay
-                retry_delay = min(retry_delay * 2 + (time.time() % 1), 60)
-                print(f"Error occurred: {str(e)}. Retrying in {retry_delay:.1f} seconds... (Attempt {retry_count} of {max_retries})")
+                jitter = random.uniform(0.5, 1.5)
+                retry_delay = min(retry_delay * 2 * jitter, 60)  # Cap at 60 seconds
+                print(f"Error occurred: {str(e)}. Retrying in {retry_delay:.1f} seconds... "
+                      f"(Attempt {retry_count} of {max_retries})")
                 time.sleep(retry_delay)
             else:
-                raise Exception(f"An error occurred while fetching Google Trends data: {str(e)}")
+                # Informative message for general Exception
+                error_message = (
+                    f"An error occurred while fetching Google Trends data after {max_retries} "
+                    f"attempts: {str(e)}. If this problem persists, ensure your network is "
+                    "stable or consider using a dedicated proxy service."
+                )
+                raise Exception(error_message)
 
 # Route for the web interface
 @app.route('/')
