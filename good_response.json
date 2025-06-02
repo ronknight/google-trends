@@ -1,0 +1,460 @@
+{
+  "data": [
+    {
+      "batman": 17,
+      "colgate": 2,
+      "date": "2024-06-02T00:00:00.000",
+      "disney": 67,
+      "dove": 29,
+      "hello kitty": 8
+    },
+    {
+      "batman": 18,
+      "colgate": 2,
+      "date": "2024-06-09T00:00:00.000",
+      "disney": 74,
+      "dove": 32,
+      "hello kitty": 9
+    },
+    {
+      "batman": 19,
+      "colgate": 2,
+      "date": "2024-06-16T00:00:00.000",
+      "disney": 79,
+      "dove": 32,
+      "hello kitty": 9
+    },
+    {
+      "batman": 19,
+      "colgate": 2,
+      "date": "2024-06-23T00:00:00.000",
+      "disney": 82,
+      "dove": 32,
+      "hello kitty": 9
+    },
+    {
+      "batman": 18,
+      "colgate": 2,
+      "date": "2024-06-30T00:00:00.000",
+      "disney": 77,
+      "dove": 33,
+      "hello kitty": 9
+    },
+    {
+      "batman": 18,
+      "colgate": 2,
+      "date": "2024-07-07T00:00:00.000",
+      "disney": 77,
+      "dove": 32,
+      "hello kitty": 10
+    },
+    {
+      "batman": 18,
+      "colgate": 2,
+      "date": "2024-07-14T00:00:00.000",
+      "disney": 78,
+      "dove": 35,
+      "hello kitty": 11
+    },
+    {
+      "batman": 19,
+      "colgate": 2,
+      "date": "2024-07-21T00:00:00.000",
+      "disney": 80,
+      "dove": 32,
+      "hello kitty": 11
+    },
+    {
+      "batman": 23,
+      "colgate": 2,
+      "date": "2024-07-28T00:00:00.000",
+      "disney": 76,
+      "dove": 34,
+      "hello kitty": 10
+    },
+    {
+      "batman": 21,
+      "colgate": 2,
+      "date": "2024-08-04T00:00:00.000",
+      "disney": 77,
+      "dove": 33,
+      "hello kitty": 11
+    },
+    {
+      "batman": 23,
+      "colgate": 2,
+      "date": "2024-08-11T00:00:00.000",
+      "disney": 87,
+      "dove": 37,
+      "hello kitty": 11
+    },
+    {
+      "batman": 22,
+      "colgate": 2,
+      "date": "2024-08-18T00:00:00.000",
+      "disney": 82,
+      "dove": 34,
+      "hello kitty": 13
+    },
+    {
+      "batman": 21,
+      "colgate": 2,
+      "date": "2024-08-25T00:00:00.000",
+      "disney": 82,
+      "dove": 35,
+      "hello kitty": 11
+    },
+    {
+      "batman": 21,
+      "colgate": 2,
+      "date": "2024-09-01T00:00:00.000",
+      "disney": 78,
+      "dove": 32,
+      "hello kitty": 12
+    },
+    {
+      "batman": 20,
+      "colgate": 2,
+      "date": "2024-09-08T00:00:00.000",
+      "disney": 76,
+      "dove": 32,
+      "hello kitty": 11
+    },
+    {
+      "batman": 24,
+      "colgate": 2,
+      "date": "2024-09-15T00:00:00.000",
+      "disney": 79,
+      "dove": 36,
+      "hello kitty": 12
+    },
+    {
+      "batman": 26,
+      "colgate": 2,
+      "date": "2024-09-22T00:00:00.000",
+      "disney": 83,
+      "dove": 32,
+      "hello kitty": 11
+    },
+    {
+      "batman": 24,
+      "colgate": 2,
+      "date": "2024-09-29T00:00:00.000",
+      "disney": 82,
+      "dove": 33,
+      "hello kitty": 11
+    },
+    {
+      "batman": 27,
+      "colgate": 2,
+      "date": "2024-10-06T00:00:00.000",
+      "disney": 85,
+      "dove": 32,
+      "hello kitty": 10
+    },
+    {
+      "batman": 25,
+      "colgate": 2,
+      "date": "2024-10-13T00:00:00.000",
+      "disney": 81,
+      "dove": 29,
+      "hello kitty": 11
+    },
+    {
+      "batman": 25,
+      "colgate": 2,
+      "date": "2024-10-20T00:00:00.000",
+      "disney": 81,
+      "dove": 32,
+      "hello kitty": 11
+    },
+    {
+      "batman": 24,
+      "colgate": 2,
+      "date": "2024-10-27T00:00:00.000",
+      "disney": 84,
+      "dove": 32,
+      "hello kitty": 11
+    },
+    {
+      "batman": 21,
+      "colgate": 2,
+      "date": "2024-11-03T00:00:00.000",
+      "disney": 79,
+      "dove": 30,
+      "hello kitty": 11
+    },
+    {
+      "batman": 24,
+      "colgate": 2,
+      "date": "2024-11-10T00:00:00.000",
+      "disney": 86,
+      "dove": 31,
+      "hello kitty": 12
+    },
+    {
+      "batman": 22,
+      "colgate": 2,
+      "date": "2024-11-17T00:00:00.000",
+      "disney": 81,
+      "dove": 31,
+      "hello kitty": 12
+    },
+    {
+      "batman": 20,
+      "colgate": 2,
+      "date": "2024-11-24T00:00:00.000",
+      "disney": 92,
+      "dove": 32,
+      "hello kitty": 12
+    },
+    {
+      "batman": 20,
+      "colgate": 2,
+      "date": "2024-12-01T00:00:00.000",
+      "disney": 87,
+      "dove": 31,
+      "hello kitty": 13
+    },
+    {
+      "batman": 19,
+      "colgate": 3,
+      "date": "2024-12-08T00:00:00.000",
+      "disney": 81,
+      "dove": 35,
+      "hello kitty": 13
+    },
+    {
+      "batman": 20,
+      "colgate": 2,
+      "date": "2024-12-15T00:00:00.000",
+      "disney": 86,
+      "dove": 30,
+      "hello kitty": 14
+    },
+    {
+      "batman": 24,
+      "colgate": 2,
+      "date": "2024-12-22T00:00:00.000",
+      "disney": 100,
+      "dove": 33,
+      "hello kitty": 13
+    },
+    {
+      "batman": 23,
+      "colgate": 2,
+      "date": "2024-12-29T00:00:00.000",
+      "disney": 99,
+      "dove": 38,
+      "hello kitty": 12
+    },
+    {
+      "batman": 19,
+      "colgate": 2,
+      "date": "2025-01-05T00:00:00.000",
+      "disney": 89,
+      "dove": 35,
+      "hello kitty": 11
+    },
+    {
+      "batman": 18,
+      "colgate": 2,
+      "date": "2025-01-12T00:00:00.000",
+      "disney": 84,
+      "dove": 34,
+      "hello kitty": 11
+    },
+    {
+      "batman": 17,
+      "colgate": 2,
+      "date": "2025-01-19T00:00:00.000",
+      "disney": 82,
+      "dove": 33,
+      "hello kitty": 11
+    },
+    {
+      "batman": 18,
+      "colgate": 2,
+      "date": "2025-01-26T00:00:00.000",
+      "disney": 79,
+      "dove": 34,
+      "hello kitty": 14
+    },
+    {
+      "batman": 17,
+      "colgate": 3,
+      "date": "2025-02-02T00:00:00.000",
+      "disney": 76,
+      "dove": 34,
+      "hello kitty": 15
+    },
+    {
+      "batman": 17,
+      "colgate": 2,
+      "date": "2025-02-09T00:00:00.000",
+      "disney": 82,
+      "dove": 33,
+      "hello kitty": 14
+    },
+    {
+      "batman": 17,
+      "colgate": 2,
+      "date": "2025-02-16T00:00:00.000",
+      "disney": 86,
+      "dove": 33,
+      "hello kitty": 12
+    },
+    {
+      "batman": 18,
+      "colgate": 2,
+      "date": "2025-02-23T00:00:00.000",
+      "disney": 80,
+      "dove": 32,
+      "hello kitty": 11
+    },
+    {
+      "batman": 16,
+      "colgate": 2,
+      "date": "2025-03-02T00:00:00.000",
+      "disney": 88,
+      "dove": 32,
+      "hello kitty": 11
+    },
+    {
+      "batman": 17,
+      "colgate": 2,
+      "date": "2025-03-09T00:00:00.000",
+      "disney": 87,
+      "dove": 32,
+      "hello kitty": 11
+    },
+    {
+      "batman": 18,
+      "colgate": 3,
+      "date": "2025-03-16T00:00:00.000",
+      "disney": 84,
+      "dove": 32,
+      "hello kitty": 11
+    },
+    {
+      "batman": 18,
+      "colgate": 4,
+      "date": "2025-03-23T00:00:00.000",
+      "disney": 83,
+      "dove": 32,
+      "hello kitty": 10
+    },
+    {
+      "batman": 21,
+      "colgate": 3,
+      "date": "2025-03-30T00:00:00.000",
+      "disney": 84,
+      "dove": 33,
+      "hello kitty": 11
+    },
+    {
+      "batman": 17,
+      "colgate": 3,
+      "date": "2025-04-06T00:00:00.000",
+      "disney": 78,
+      "dove": 34,
+      "hello kitty": 11
+    },
+    {
+      "batman": 17,
+      "colgate": 2,
+      "date": "2025-04-13T00:00:00.000",
+      "disney": 81,
+      "dove": 33,
+      "hello kitty": 10
+    },
+    {
+      "batman": 18,
+      "colgate": 3,
+      "date": "2025-04-20T00:00:00.000",
+      "disney": 77,
+      "dove": 37,
+      "hello kitty": 9
+    },
+    {
+      "batman": 16,
+      "colgate": 3,
+      "date": "2025-04-27T00:00:00.000",
+      "disney": 78,
+      "dove": 37,
+      "hello kitty": 9
+    },
+    {
+      "batman": 15,
+      "colgate": 3,
+      "date": "2025-05-04T00:00:00.000",
+      "disney": 77,
+      "dove": 39,
+      "hello kitty": 9
+    },
+    {
+      "batman": 15,
+      "colgate": 3,
+      "date": "2025-05-11T00:00:00.000",
+      "disney": 75,
+      "dove": 36,
+      "hello kitty": 9
+    },
+    {
+      "batman": 15,
+      "colgate": 2,
+      "date": "2025-05-18T00:00:00.000",
+      "disney": 78,
+      "dove": 37,
+      "hello kitty": 9
+    },
+    {
+      "batman": 17,
+      "colgate": 2,
+      "date": "2025-05-25T00:00:00.000",
+      "disney": 77,
+      "dove": 40,
+      "hello kitty": 9
+    },
+    {
+      "batman": 19,
+      "colgate": 2,
+      "date": "2025-06-01T00:00:00.000",
+      "disney": 82,
+      "dove": 38,
+      "hello kitty": 9
+    }
+  ],
+  "schema": {
+    "fields": [
+      {
+        "name": "date",
+        "type": "datetime"
+      },
+      {
+        "name": "disney",
+        "type": "integer"
+      },
+      {
+        "name": "hello kitty",
+        "type": "integer"
+      },
+      {
+        "name": "dove",
+        "type": "integer"
+      },
+      {
+        "name": "colgate",
+        "type": "integer"
+      },
+      {
+        "name": "batman",
+        "type": "integer"
+      }
+    ],
+    "pandas_version": "1.4.0",
+    "primaryKey": [
+      "date"
+    ]
+  }
+}

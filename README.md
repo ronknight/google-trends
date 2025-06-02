@@ -30,13 +30,17 @@ This Python Flask application allows you to compare the popularity of two or thr
 
 ## Features
 
-- Compare the search interest of **2 or 3 keywords** over a custom time period
+- Compare the search interest of **2 to 5 keywords** over a custom time period
 - **Multiple timeframe options**, including past day, past 7 days, past 12 months, past 5 years, and 2004 to present
 - Clean, responsive **web interface** for easy data input and result display
 - **Visual plot output** saved as a `.png` image and displayed in the browser
 - **Smart error handling** with user-friendly error messages and suggestions
 - **Rate-limiting protection** with automatic retries and exponential backoff
 - **Custom user agent rotation** to prevent blocking from Google Trends
+- Enhanced reliability for fetching Google Trends data through updated dependencies.
+- Improved User-Agent randomization to minimize request blocking.
+- Refined retry logic with jitter for more robust connection handling.
+- Provides a JSON API endpoint (`/api/compare`) for programmatic access to the Google Trends data.
 
 ## Prerequisites
 
@@ -81,7 +85,7 @@ Before running the application, ensure you have Python installed along with the 
 
 The application provides a clean, user-friendly web interface with the following features:
 
-- **Intuitive Form**: Easy input for two required keywords and an optional third keyword
+- **Intuitive Form**: Easy input for two required keywords and up to three additional optional keywords (total of 5).
 - **Timeframe Selection**: Dropdown menu with various time period options
 - **Loading Indicator**: Visual feedback during data retrieval with a progress bar
 - **Error Display**: Clear error messages with helpful suggestions when issues occur
@@ -156,13 +160,85 @@ graph TD
 
 The application includes robust error handling:
 
-- **Rate limiting detection** with automatic retries using exponential backoff
+- **Rate limiting detection** with automatic retries using exponential backoff. Error messages now provide more specific feedback if all retries fail, including a suggestion to use a dedicated proxy service if problems persist.
 - **User-friendly error page** with clear explanation of what went wrong
 - **Helpful suggestions** for resolving common issues like:
   - Using different keywords
   - Waiting before trying again (for rate-limiting issues)
   - Checking keyword spelling
   - Using shorter timeframes
+
+## Advanced Configuration
+
+### Proxy Configuration
+
+If you are experiencing persistent issues with requests being blocked by Google, or if you prefer to route `pytrends` traffic through a proxy, you can configure the application to use an HTTP/S proxy.
+
+To do this, set the following environment variables before running the application:
+
+```bash
+export HTTP_PROXY="http://your_proxy_address:port"
+export HTTPS_PROXY="https://your_proxy_address:port"
+```
+
+Replace `your_proxy_address:port` with the actual address and port of your proxy server. If both variables are set, `pytrends` will use them for its requests. Ensure your proxy supports HTTPS if you intend to use `HTTPS_PROXY`.
+
+## JSON API Usage
+
+The application provides a JSON API endpoint for programmatic access to Google Trends data.
+
+- **URL:** `/api/compare`
+- **Method:** `POST`
+- **Request Body:** JSON payload
+
+### Request Payload Parameters
+
+- `keywords`: (list of strings) A list of 2 to 5 keywords to compare. Required.
+- `timeframe`: (string) The timeframe for the trends data (e.g., "today 12-m", "today 1-m", "all"). Required.
+
+### Example Request Payload
+
+```json
+{
+    "keywords": ["python", "javascript", "java"],
+    "timeframe": "today 12-m"
+}
+```
+
+### Success Response
+
+- **Code:** `200 OK`
+- **Content:** A JSON object representing the pandas DataFrame in 'table' orientation, which includes schema and data. Dates are formatted in ISO 8601 format (e.g., `YYYY-MM-DDTHH:mm:ss.sssZ`).
+
+#### Example Success Response Structure (Simplified)
+
+```json
+{
+  "schema": {
+    "fields": [
+      {"name": "date", "type": "datetime"},
+      {"name": "keyword1", "type": "integer"},
+      {"name": "keyword2", "type": "integer"},
+      // ... up to 5 keywords
+      // {"name": "isPartial", "type": "boolean"} // May be present
+    ],
+    "primaryKey": ["date"],
+    "pandas_version": "1.x.x" // Example pandas version
+  },
+  "data": [
+    {"date": "YYYY-MM-DDTHH:mm:ss.sssZ", "keyword1": 75, "keyword2": 80, /* ... */},
+    // ... more data points
+  ]
+}
+```
+*Note: The actual field names for keywords in the `data` array will match the keywords you provided in the request.*
+
+### Error Responses
+
+- **`400 Bad Request`**: Invalid JSON payload, missing required fields, or invalid keyword/timeframe format. The response body will contain a JSON object with an "error" key describing the issue.
+- **`404 Not Found`**: No data available for the given keywords or timeframe.
+- **`429 Too Many Requests`**: If the server encounters rate limiting from Google Trends after multiple retries.
+- **`500 Internal Server Error`**: For other server-side errors during data processing.
 
 ## Project Structure
 
